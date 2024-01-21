@@ -1,5 +1,4 @@
-﻿//Messages
-using DownloaderBot;
+﻿using DownloaderBot;
 using Newtonsoft.Json;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -26,63 +25,69 @@ namespace DownloaderBot
 
         private async Task TextAsyncFunction(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            if (update.Message is not { } message)
+            if (update.Message is not { } receivedMessage)
                 return;
-            if (message.Text is not { } messageText)
+            if (receivedMessage.Text is not { } messageText)
                 return;
 
-            var chatId = update.Message.Chat.Id;
+            var chatId = receivedMessage.Chat.Id;
 
-            Console.WriteLine($"Received a '{message.Text}' message in chat {chatId}. UserName =>  {message.Chat.Username}");
+            if (messageText == "/start")
+            {
+                await botClient.SendTextMessageAsync(
+                    chatId: receivedMessage.Chat.Id,
+                    replyToMessageId: receivedMessage.MessageId,
+                    text: "\n\n\n\t\tWelcome to Instagram Downloader🔴🟡🟢\n\n\n" +
+                          "\t\t\tIn order to download a video or photo from Instagram, you have to choose buttons >>> ",
+                    cancellationToken: cancellationToken);
+            }
+            else
+            {
+                // Add button creation and sending logic
+                await Buttons.CreateButton(botClient, update, cancellationToken);
+
+                // Rest of your existing code...
+            }
+        }
+
+        private async Task ProcessUserLink(ITelegramBotClient botClient, Message receivedMessage, string link, CancellationToken cancellationToken)
+        {
             try
             {
-                Console.WriteLine($"Message Type: {message.Type} Username=> {message.Chat.Username} Text => {message.Text} ");
-                //string originalUrl = "https://www.instagram.com/p/C0bXUHTo5HP/?utm_source=ig_web_copy_link";
-                //Console.WriteLine(encodedUrl);
-                //return;
                 ApiKey root = new ApiKey();
 
-                IList<Model> body = JsonConvert.DeserializeObject<IList<Model>>(root.RunApi(messageText).Result);
+                // Process the link and download the content
+                IList<Model> body = JsonConvert.DeserializeObject<IList<Model>>(root.RunApi(link).Result);
 
                 foreach (var item in body)
                 {
-                    isEnter = true;
                     Console.WriteLine($"\n{item.url}\n");
                     await botClient.SendChatActionAsync(
-                        chatId: update.Message.Chat.Id,
+                        chatId: receivedMessage.Chat.Id,
                         chatAction: ChatAction.UploadDocument,
-                        cancellationToken: cancellationToken
-                    );
+                        cancellationToken: cancellationToken);
+
                     if (item.type == "video")
                     {
                         await botClient.SendVideoAsync(
-                           chatId: chatId,
-                           video: $"{item.url}",
-                           supportsStreaming: true,
-                           cancellationToken: cancellationToken);
+                            chatId: receivedMessage.Chat.Id,
+                            video: $"{item.url}",
+                            supportsStreaming: true,
+                            cancellationToken: cancellationToken);
                     }
                     else if (item.type == "photo")
                     {
                         await botClient.SendPhotoAsync(
-                           chatId: chatId,
-                           photo: $"{item.url}",
-                           cancellationToken: cancellationToken);
+                            chatId: receivedMessage.Chat.Id,
+                            photo: $"{item.url}",
+                            cancellationToken: cancellationToken);
                     }
                 }
-                if (!isEnter)
-                {
-                    string replasemessage = messageText.Replace("www.", "dd");
-                    await botClient.SendVideoAsync
-                    (
-                           chatId: chatId,
-                           video: $"{replasemessage}",
-                           supportsStreaming: true,
-                           cancellationToken: cancellationToken
-                    );
-                }
-
             }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private async Task DocumentAsyncFunction(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
@@ -96,3 +101,6 @@ namespace DownloaderBot
         }
     }
 }
+
+
+

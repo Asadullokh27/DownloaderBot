@@ -1,18 +1,26 @@
-﻿using Telegram.Bot.Types.ReplyMarkups;
+﻿using Telegram.Bot.Types;
+using Telegram.Bot;
+using Telegram.Bot.Types.ReplyMarkups;
+using static System.Net.Mime.MediaTypeNames;
+using System.Threading;
 
 namespace DownloaderBot
 {
     public class Buttons
     {
-        public static ReplyKeyboardMarkup replyKeyboardMarkup = new(
-            new[]
+        public static async Task CreateButton(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            new KeyboardButton[] { "Please,click button for video Wallpaper >>> " },
-            new KeyboardButton[] { "Please,click button for Photo🖼 >>> " },
-            new KeyboardButton[] { "Please,click button for Video🎞 >>> " }
-        })
-        {
-            ResizeKeyboard = true
-        };
+            var replyKeyboard = new ReplyKeyboardMarkup(
+                new[]
+            {
+            new KeyboardButton[] { "Wallpaper🏙 >>> " },
+            new KeyboardButton[] { "Photo🖼 >>> " },
+            new KeyboardButton[] { "Video🎞 >>> " }
+            })
+            {
+                ResizeKeyboard = true
+            };
+
+        }
     }
 }

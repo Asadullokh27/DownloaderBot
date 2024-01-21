@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DownloaderBot", "DownloaderBot\DownloaderBot.csproj", "{66B4ECC8-480A-4B2C-AAA4-B12371BD7CAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DownloaderBot", "DownloaderBot\DownloaderBot.csproj", "{66B4ECC8-480A-4B2C-AAA4-B12371BD7CAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BotSubscriber", "BotSubscriber\BotSubscriber.csproj", "{E142CD75-9B10-488C-A50C-CD20EA350E79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{66B4ECC8-480A-4B2C-AAA4-B12371BD7CAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66B4ECC8-480A-4B2C-AAA4-B12371BD7CAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66B4ECC8-480A-4B2C-AAA4-B12371BD7CAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E142CD75-9B10-488C-A50C-CD20EA350E79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E142CD75-9B10-488C-A50C-CD20EA350E79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E142CD75-9B10-488C-A50C-CD20EA350E79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E142CD75-9B10-488C-A50C-CD20EA350E79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
